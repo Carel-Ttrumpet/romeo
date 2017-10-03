@@ -34,10 +34,12 @@ defmodule Romeo.Stanza do
     ) |> to_xml
   end
 
-  def to_xml(%Message{to: to, type: type, body: body}) do
-    message(to_string(to), type, body) |> to_xml
+  def to_xml(%Message{id: "", to: to, type: type, body: body}) do
+    message(to_string(to), type, body, generate_id()) |> to_xml
   end
-
+  def to_xml(%Message{id: id, to: to, type: type, body: body}) do
+    message(to_string(to), type, body, id) |> to_xml
+  end
   @doc """
   Starts an XML stream.
 
@@ -273,7 +275,7 @@ defmodule Romeo.Stanza do
   def groupchat(to, body, id \\ generate_id()), do: message(to, "groupchat", body, id)
 
   def message(msg) when is_map(msg) do
-    message(msg["to"], msg["type"], msg["body"])
+    message(msg["to"], msg["type"], msg["body"], msg["id"] || generate_id())
   end
   def message(to, type, message, id) do
     xmlel(name: "message",
