@@ -145,7 +145,7 @@ defmodule Romeo.Stanza do
   end
 
   def iq(type, body) do
-    xmlel(name: "iq", attrs: [{"type", type}, {"id", id}], children: [body])
+    xmlel(name: "iq", attrs: [{"type", type}, {"id", generate_id()}], children: [body])
   end
 
   def iq(to, type, body) do
@@ -268,14 +268,14 @@ defmodule Romeo.Stanza do
     xmlel(name: "password", children: [xmlcdata(content: password)])
   end
 
-  def chat(to, body), do: message(to, "chat", body)
-  def normal(to, body), do: message(to, "normal", body)
-  def groupchat(to, body), do: message(to, "groupchat", body)
+  def chat(to, body, id \\ generate_id()), do: message(to, "chat", body, id)
+  def normal(to, body, id \\ generate_id()), do: message(to, "normal", body, id)
+  def groupchat(to, body, id \\ generate_id()), do: message(to, "groupchat", body, id)
 
   def message(msg) when is_map(msg) do
     message(msg["to"], msg["type"], msg["body"])
   end
-  def message(to, type, message) do
+  def message(to, type, message, id) do
     xmlel(name: "message",
       attrs: [
         {"to", to},
@@ -336,7 +336,7 @@ defmodule Romeo.Stanza do
   @doc """
   Generates a random hex string for use as an id for a stanza.
   """
-  def id do
+  def generate_id do
     :crypto.strong_rand_bytes(2) |> Base.encode16(case: :lower)
   end
 end
