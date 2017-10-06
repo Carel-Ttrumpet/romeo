@@ -25,12 +25,12 @@ defmodule Romeo.Transports.TCP do
 
     conn = %{conn | host: host, port: port, socket_opts: socket_opts}
 
-    case :gen_tcp.connect(host, port, socket_opts ++ @socket_opts, conn.timeout) do
+    case :ssl.connect(host, port, socket_opts ++ @socket_opts, conn.timeout) do
       {:ok, socket} ->
         Logger.info fn -> "Established connection to #{host}" end
         parser = :fxml_stream.new(self(), :infinity, [:no_gen_server])
-        conn = %{conn | parser: parser, socket: {:gen_tcp, socket}}
-        conn = if tls, do: upgrade_to_tls(conn), else: conn
+        conn = %{conn | parser: parser, socket: {:ssl, socket}}
+      #  conn = if tls, do: upgrade_to_tls(conn), else: conn
         start_protocol(conn)
       {:error, _} = error ->
         error
