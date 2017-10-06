@@ -115,7 +115,9 @@ defmodule Romeo.Transports.TCP do
     Romeo.Auth.handshake!(conn)
   end
 
-  defp bind(%Conn{owner: owner, resource: resource} = conn) do
+  defp bind(%Conn{owner: owner, resource: resource, nickname: nickname} = conn) do
+    random_string = :crypto.strong_rand_bytes(4) |> Base.encode16(case: :lower)
+    resource = nickname <> "-" <> random_string
     stanza = Romeo.Stanza.bind(resource)
     id = Romeo.XML.attr(stanza, "id")
 

@@ -17,7 +17,7 @@ defmodule Romeo.Connection do
             password: nil,
             port: nil,
             preferred_auth_mechanisms: [],
-            require_tls: false,
+            require_tls: true,
             resource: "",
             rooms: [],
             ssl_opts: [],

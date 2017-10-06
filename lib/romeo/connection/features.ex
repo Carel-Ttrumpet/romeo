@@ -11,7 +11,7 @@ defmodule Romeo.Connection.Features do
     compression?: false,
     registration?: false,
     stream_management?: false,
-    tls?: false,
+    tls?: true,
     mechanisms: []
   ]
 
