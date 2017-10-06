@@ -28,7 +28,7 @@ defmodule Romeo.Mixfile do
 
   defp deps do
     [{:connection, "~> 1.0"},
-     {:fast_xml, "~> 1.1.12"},
+     {:fast_xml, "~> 1.1.13"},
 
      # Docs deps
      {:ex_doc, "~> 0.14", only: :dev},
